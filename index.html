@@ -5,366 +5,377 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ZENDO - Tienda de Ropa</title>
     <style>
-        body { 
-            font-family: 'Arial', sans-serif; 
-            margin: 0; 
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            background-color: #f8f9fa;
-        }
-        a { text-decoration: none; color: inherit; }
-        
-        /* Header */
-        header {
-            background-color: #fff;
-            padding: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        
-        /* Banner */
-        .banner {
-            width: 100%;
-            height: 400px; /* Ajuste del tamaño recomendado */
-            background: url('https://res.cloudinary.com/dyj62f5iz/image/upload/vbanner1') center/cover;
-            margin-bottom: 30px;
-        }
+       body { 
+    font-family: 'Arial', sans-serif; 
+    margin: 0; 
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #f8f9fa;
+}
+a { text-decoration: none; color: inherit; }
 
-        nav ul { list-style: none; margin: 0; padding: 0; display: flex; }
-        nav li { margin-left: 20px; }
-        
-        /* Buscador */
-        .buscador-container {
-            display: flex;
-            justify-content: center;
-            margin: 20px 0;
-            position: relative;
-            width: 100%; /* Asegura que el contenedor del buscador ocupe todo el ancho disponible */
-        }
-        .buscador-container input {
-            width: 65%; /* Buscador con 65% del ancho */
-            max-width: 600px; /* Ancho máximo para evitar que se expanda demasiado */
-            padding: 10px;
-            border-radius: 25px;
-            border: 1px solid #ccc;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        .buscador-container .clear-btn {
-            position: absolute;
-            right: 10px; /* Ajusta la posición del botón */
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 1.2em;
-            color: #888;
-        }
+/* Header */
+header {
+    background-color: #fff;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
 
-        /* Productos */
-        #productos { 
-            padding: 40px; 
-            text-align: center;
-            flex: 1;
-        }
-        #contenedor-productos {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            grid-gap: 20px;
-            padding-top: 20px;
-        }
-        .producto {
-            border: 1px solid #ccc;
-            padding: 20px;
-            text-align: center;
-            transition: transform 0.3s ease;
-            background: white;
-            border-radius: 10px;
-        }
-        .producto:hover { transform: translateY(-5px); box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
-        .producto img {
-            max-width: 100%;
-            height: 250px;
-            object-fit: cover;
-            border-radius: 5px;
-            loading: lazy;
-        }
-        
-        /* Selectores */
-        .talles {
-            margin: 15px 0;
-            display: flex;
-            justify-content: center;
-            gap: 5px;
-        }
-        .btn-talle {
-            background: #f0f0f0;
-            border: 1px solid #ccc;
-            padding: 8px 15px;
-            cursor: pointer;
-            border-radius: 20px;
-            transition: all 0.3s ease;
-        }
-        .btn-talle.seleccionado { 
-            background: #28a745; 
-            color: white;
-            border-color: #28a745;
-        }
-        .colores { 
-            display: flex; 
-            justify-content: center; 
-            margin: 15px 0; 
-            gap: 10px;
-        }
-        .color {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            cursor: pointer;
-            border: 3px solid transparent;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-        .color.seleccionado::after {
-            content: "✓";
-            color: white;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-weight: bold;
-            text-shadow: 0 0 3px rgba(0,0,0,0.5);
-        }
-        .color.seleccionado { 
-            border-color: white;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
-        .bordo { background-color: #800020; }
-        .verde-rolex { background-color: #0a472a; }
-        .negro { background-color: #000; }
-        
-        /* Carrito */
-        #carrito-container {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1000;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            gap: 15px;
-        }
-        .flotante {
-            width: 60px;
-            height: 60px; /* Ajuste del tamaño recomendado */
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            box-shadow: 0 3px 6px rgba(0,0,0,0.16);
-            transition: transform 0.3s ease;
-        }
-        .flotante:hover { transform: scale(1.1); }
-        #carrito-icono {
-            background-color: #28a745;
-            color: white;
-            background-image: url('https://res.cloudinary.com/dyj62f5iz/image/upload/vboton_carrito');
-            background-size: cover;
-            background-position: center;
-        }
-        #wsp-icono {
-            background-color: #25D366;
-            color: white;
-            background-image: url('https://res.cloudinary.com/dyj62f5iz/image/upload/vbotonwsp');
-            background-size: cover;
-            background-position: center;
-        }
-        .badge {
-            position: absolute;
-            bottom: -5px;
-            left: -5px;
-            background: red;
-            color: white;
-            width: 25px;
-            height: 25px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-        }
-        #carrito-contenido {
-            position: absolute;
-            bottom: 70px;
-            right: 0;
-            width: 350px;
-            max-height: 0;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            background: white;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            padding: 0;
-            opacity: 0;
-            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
-        }
-        #carrito-contenido.abierto {
-            max-height: 70vh;
-            padding: 20px;
-            opacity: 1;
-            overflow-y: auto;
-        }
-        .item-carrito {
-            position: relative;
-            display: grid;
-            grid-template-columns: 100px 1fr;
-            gap: 15px;
-            padding: 15px;
-            border-bottom: 1px solid #eee;
-            background: #fff;
-        }
-        .item-carrito img {
-            width: 50px; /* Ajuste del tamaño recomendado */
-            height: 50px; /* Ajuste del tamaño recomendado */
-            object-fit: cover;
-            margin-right: 10px;
-            border-radius: 5px;
-        }
-        .detalles-item {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-            margin: 10px 0;
-        }
-        .detalles-item .talle {
-            background: #f0f0f0;
-            padding: 5px 10px;
-            border-radius: 15px;
-            font-size: 0.9em;
-        }
-        .detalles-item .color {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            border: 2px solid #fff;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        .controles-cantidad {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin: 15px 0;
-        }
-        .controles-cantidad button {
-            width: 30px;
-            height: 30px;
-            border: none;
-            background: #28a745;
-            color: white;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        #btn-continuar {
-            background: #28a745;
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            width: 100%;
-            margin-top: 15px;
-            cursor: pointer;
-            border-radius: 25px;
-            font-weight: bold;
-            transition: background 0.3s ease;
-        }
-        #btn-continuar:hover { background: #218838; }
-        #btn-continuar:disabled { 
-            background: #ccc; 
-            cursor: not-allowed; 
-        }
-        .total-compra {
-            padding: 20px;
-            background: #f8f9fa;
-        }
-        .total-linea {
-            display: flex;
-            justify-content: space-between;
-            font-size: 1.2em;
-            font-weight: bold;
-        }
-        .monto {
-            color: #28a745;
-        }
-        .notificacion {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            padding: 12px 25px;
-            border-radius: 30px;
-            font-weight: bold;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
-            animation: aparecer 0.3s ease;
-        }
-        @keyframes aparecer {
-            from { bottom: -50px; opacity: 0; }
-            to { bottom: 20px; opacity: 1; }
-        }
-        .notificacion.exito {
-            background: #28a745;
-            color: white;
-        }
-        .notificacion.error {
-            background: #dc3545;
-            color: white;
-        }
+/* Banner */
+.banner {
+    width: 100%;
+    height: 400px;
+    background-image: url('https://asset.cloudinary.com/dyj62f5iz/cfe82ff675bf9eff4d2922f2669c7326');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    display: block; /* Asegura que el div se muestre */
+    min-height: 400px; /* Garantiza el tamaño mínimo */
+}
 
-        /* Footer */
-        footer {
-            background-color: #fff;
-            padding: 40px 20px;
-            text-align: center;
-            box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
-        }
-        .footer-contenido {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-        }
-        .footer-columna h3 {
-            margin-bottom: 15px;
-            color: #28a745;
-        }
-        .footer-columna p {
-            margin: 5px 0;
-            color: #666;
-        }
-        .footer-columna a {
-            color: #28a745;
-            text-decoration: none;
-        }
-        .footer-columna a:hover {
-            text-decoration: underline;
-        }
-        .data-fiscal {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 20px;
-            gap: 10px;
-        }
-        .data-fiscal img {
-            max-width: 100px;
-            height: auto;
-        }
+nav ul { list-style: none; margin: 0; padding: 0; display: flex; }
+nav li { margin-left: 20px; }
+
+/* Buscador */
+.buscador-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+    position: relative;
+    width: 100%; /* Asegura que el contenedor del buscador ocupe todo el ancho disponible */
+}
+.buscador-container input {
+    width: 65%; /* Buscador con 65% del ancho */
+    max-width: 600px; /* Ancho máximo para evitar que se expanda demasiado */
+    padding: 10px;
+    border-radius: 25px;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+.buscador-container .clear-btn {
+    display: none; /* Ocultar el botón de limpiar */
+}
+
+/* Productos */
+#productos { 
+    padding: 40px; 
+    text-align: center;
+    flex: 1;
+}
+#contenedor-productos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-gap: 20px;
+    padding-top: 20px;
+}
+.producto {
+    border: 1px solid #ccc;
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.3s ease;
+    background: white;
+    border-radius: 10px;
+}
+.producto:hover { transform: translateY(-5px); box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+.producto img {
+    max-width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 5px;
+    loading: lazy;
+}
+
+@media (max-width: 600px) {
+    .producto img {
+        height: auto; /* Ajusta la altura automáticamente */
+        object-fit: contain; /* Cambiado a contain */
+    }
+}
+
+/* Selectores */
+.talles {
+    margin: 15px 0;
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+}
+.btn-talle {
+    background: #f0f0f0;
+    border: 1px solid #ccc;
+    padding: 8px 15px;
+    cursor: pointer;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+}
+.btn-talle.seleccionado { 
+    background: #28a745; 
+    color: white;
+    border-color: #28a745;
+}
+.colores { 
+    display: flex; 
+    justify-content: center; 
+    margin: 15px 0; 
+    gap: 10px;
+}
+.color {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 3px solid transparent;
+    transition: all 0.3s ease;
+    position: relative;
+}
+.color.seleccionado::after {
+    content: "✓";
+    color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: bold;
+    text-shadow: 0 0 3px rgba(0,0,0,0.5);
+}
+.color.seleccionado { 
+    border-color: white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+.bordo { background-color: #800020; }
+.verde-rolex { background-color: #0a472a; }
+.negro { background-color: #000; }
+
+/* Carrito */
+#carrito-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 15px;
+}
+.flotante {
+    width: 60px;
+    height: 60px; /* Ajuste del tamaño recomendado */
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16);
+    transition: transform 0.3s ease;
+}
+.flotante:hover { transform: scale(1.1); }
+#carrito-icono {
+    background-color: #28a745;
+    color: white;
+    background-image: url('https://res.cloudinary.com/dyj62f5iz/image/upload/vboton_carrito');
+    background-size: cover;
+    background-position: center;
+}
+#wsp-icono {
+    background-color: #25D366;
+    color: white;
+    background-image: url('https://res.cloudinary.com/dyj62f5iz/image/upload/vbotonwsp');
+    background-size: cover;
+    background-position: center;
+}
+.badge {
+    position: absolute;
+    bottom: -5px;
+    left: -5px;
+    background: red;
+    color: white;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+}
+#carrito-contenido {
+    position: absolute;
+    bottom: 70px;
+    right: 0;
+    width: 350px;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 0;
+    opacity: 0;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+}
+#carrito-contenido.abierto {
+    max-height: 70vh;
+    padding: 20px;
+    opacity: 1;
+    overflow-y: auto;
+}
+.item-carrito {
+    position: relative;
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 15px;
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    background: #fff;
+}
+.item-carrito img {
+    width: 50px; /* Ajuste del tamaño recomendado */
+    height: 50px; /* Ajuste del tamaño recomendado */
+    object-fit: cover;
+    margin-right: 10px;
+    border-radius: 5px;
+}
+.detalles-item {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    margin: 10px 0;
+}
+.detalles-item .talle {
+    background: #f0f0f0;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.9em;
+}
+.detalles-item .color {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+.controles-cantidad {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 15px 0;
+}
+.controles-cantidad button {
+    width: 30px;
+    height: 30px;
+    border: none;
+    background: #28a745;
+    color: white;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+#btn-continuar {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    width: 100%;
+    margin-top: 15px;
+    cursor: pointer;
+    border-radius: 25px;
+    font-weight: bold;
+    transition: background 0.3s ease;
+}
+#btn-continuar:hover { background: #218838; }
+#btn-continuar:disabled { 
+    background: #ccc; 
+    cursor: not-allowed; 
+}
+.total-compra {
+    padding: 20px;
+    background: #f8f9fa;
+}
+.total-linea {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+.monto {
+    color: #28a745;
+}
+.notificacion {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 12px 25px;
+    border-radius: 30px;
+    font-weight: bold;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+    animation: aparecer 0.3s ease;
+}
+@keyframes aparecer {
+    from { bottom: -50px; opacity: 0; }
+    to { bottom: 20px; opacity: 1; }
+}
+.notificacion.exito {
+    background: #28a745;
+    color: white;
+}
+.notificacion.error {
+    background: #dc3545;
+    color: white;
+}
+
+/* Footer */
+footer {
+    background-color: #fff;
+    padding: 40px 20px;
+    text-align: center;
+    box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+}
+.footer-contenido {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+.footer-columna h3 {
+    margin-bottom: 15px;
+    color: #28a745;
+}
+.footer-columna p {
+    margin: 5px 0;
+    color: #666;
+}
+.footer-columna a {
+    color: #28a745;
+    text-decoration: none;
+}
+.footer-columna a:hover {
+    text-decoration: underline;
+}
+.data-fiscal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    gap: 10px;
+}
+.data-fiscal img {
+    max-width: 100px;
+    height: auto;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    #contenedor-productos {
+        grid-template-columns: repeat(3, 1fr); /* Matrices de 3x3 para dispositivos móviles */
+    }
+}
+        
     </style>
 </head>
 <body>
@@ -444,15 +455,15 @@
 
         const productosArray = [
         { nombre: "Remera Oversize Bordado 1", precio: 20000, imagen: "2_k5kmdk" },
-{ nombre: "Remera Oversize Bordada 2", precio: 20000, imagen: "3_miuzjs" },
-{ nombre: "Remera Oversize Bordado 3", precio: 20000, imagen: "1_twivzs" },
-{ nombre: "Remera Oversize Bordado 4", precio: 20000, imagen: "bordados_para_pagina_1_bm6ccy" },
-{ nombre: "Remera Oversize Bordado 5", precio: 20000, imagen: "8_f4ybho" },
-{ nombre: "Remera Oversize Bordado 6", precio: 20000, imagen: "7_aldjhz" },
-{ nombre: "Remera Oversize Bordado 7", precio: 20000, imagen: "5_ovmlou" },
-{ nombre: "Remera Oversize Bordado 8", precio: 20000, imagen: "4_kwt4d3" },
-{ nombre: "Remera Oversize Bordado 9", precio: 20000, imagen: "11_ej534g" },
-{ nombre: "Remera Oversize Bordado 10", precio: 20000, imagen: "10_jc6hjb" },
+        { nombre: "Remera Oversize Bordado 2", precio: 20000, imagen: "3_miuzjs" },
+        { nombre: "Remera Oversize Bordado 3", precio: 20000, imagen: "1_twivzs" },
+        { nombre: "Remera Oversize Bordado 4", precio: 20000, imagen: "bordados_para_pagina_1_bm6ccy" },
+        { nombre: "Remera Oversize Bordado 5", precio: 20000, imagen: "8_f4ybho" },
+        { nombre: "Remera Oversize Bordado 6", precio: 20000, imagen: "7_aldjhz" },
+        { nombre: "Remera Oversize Bordado 7", precio: 20000, imagen: "5_ovmlou" },
+        { nombre: "Remera Oversize Bordado 8", precio: 20000, imagen: "4_kwt4d3" },
+        { nombre: "Remera Oversize Bordado 9", precio: 20000, imagen: "11_ej534g"},
+        { nombre: "Remera Oversize Bordado 10", precio: 20000, imagen: "10_jc6hjb" },
 { nombre: "Remera Oversize Bordado 11", precio: 20000, imagen: "9_jtvgog" },
 { nombre: "Remera Oversize Bordado 12", precio: 20000, imagen: "6_ljuhjq" },
 { nombre: "Remera Oversize Bordado 13", precio: 20000, imagen: "15_lssmqp" },
@@ -582,7 +593,6 @@
 { nombre: "Remera Oversize Bordado 137", precio: 20000, imagen: "138_rgrkgg" },
 { nombre: "Remera Oversize Bordado 138", precio: 20000, imagen: "137_dtvmyd" },
 { nombre: "Remera Oversize Bordado 139", precio: 20000, imagen: "136_rxz7cv" },
-{ nombre: "Remera Oversize Bordado 140", precio: 20000, imagen: "143_b8bglf" },
 { nombre: "Remera Oversize Bordado 140", precio: 20000, imagen: "143_b8bglf" },
 { nombre: "Remera Oversize Bordado 141", precio: 20000, imagen: "142_yqy9so" },
 { nombre: "Remera Oversize Bordado 142", precio: 20000, imagen: "141_k029eh" },
